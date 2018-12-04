@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="gb2312">
+    <title>Hello IoT</title>
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<script>
+
+    $(document).ready(function() {
+
+        $("#insertUser").click(function(){
+            $.ajax(
+                {
+                    url: "user/insert",
+                    data: JSON.stringify({
+                        "name":$("#name").val(),
+                        "phone" : $("#phone").val()
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    type: "post",
+                    success:function(data)
+                    {
+                        alert("添加成功");
+                    },
+                    error:function()
+                    {
+                        alert("添加失败");
+                    },
+                    complete:function()
+                    {
+                        location.reload();
+                    }
+                });
+        });
+
+        $("#deleteUser").click(function(){
+            $.ajax(
+                {
+                    url: "user/delete",
+                    data: JSON.stringify({
+                        "name":$("#name_delete").val()
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    type: "post",
+                    success:function(data)
+                    {
+                        alert("删除成功");
+                    },
+                    error:function()
+                    {
+                        alert("删除失败");
+                    },
+                    complete:function()
+                    {
+                        location.reload();
+                    }
+                });
+        });
+
+        $.ajax({
+                url: "user/list",
+                data: JSON.stringify({
+                }),
+                contentType: "application/json; charset=utf-8",
+                type: "post",
+                success:function(data)
+                {
+                    if(data)
+                    {
+                        var list = data
+                        for(var i =0; i < list.length; i++) {
+                            var record = list[i]
+                            var recordElement = "<tr>\n" +
+                                "            <td>" + record.name + "</td>\n" +
+                                "            <td>" + record.phone + "</td>\n" +
+                                "        </tr>"
+                            $("#userList").append(recordElement)
+                        }
+                    }
+                    else
+                    {
+                        alert('操作失败');
+                    }
+                },
+                error:function()
+                {
+                    alert('请求出错');
+                }
+            });
+
+
+    });
+</script>
+<body>
+<div class="container" style="min-width: 1200px;">
+    <h1>
+        <a href="home.html">Hello IoT-Mysql测试</a>
+    </h1>
+
+    新增用户
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <td>name：<input id="name" type="text"></td>
+            <td>phone：<input id="phone" type="text"></td>
+            <td colspan="10" style=" text-align: center; padding: 10px; border: none">
+                <input type="submit" id="insertUser" class="btn btn-default" value="新增" />
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    删除用户
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <td>name：<input id="name_delete" type="text"></td>
+            <td colspan="10" style=" text-align: center; padding: 10px; border: none">
+                <input type="submit" id="deleteUser" class="btn btn-default" value="删除" />
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    用户列表
+    <table class="table table-hover table-bordered" >
+        <thead>
+        <tr>
+            <th>name</th>
+            <th>phone</th>
+        </tr>
+        </thead>
+        <tbody id="userList">
+        <!-- BEGIN list -->
+
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
