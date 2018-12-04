@@ -26,7 +26,7 @@ public class DataSourceConfig {
 
     private static String DB_USER = "iot.hosting.demodb.mysqlUser";
 
-    private static String DB_PASSWORD = "iot.hosting.demodb.mysqlPassword";
+    private static String DB_LOGINPWD = "iot.hosting.demodb.mysqlPassword";
 
     private static String DB_URL = "iot.hosting.demodb.mysqlUrl";
 
@@ -36,9 +36,7 @@ public class DataSourceConfig {
         dataSource.setDriverClassName(DB_DRIVER);
         dataSource.setUrl(env.getProperty(DB_URL));
         dataSource.setUsername(env.getProperty(DB_USER));
-        dataSource.setPassword(env.getProperty(DB_PASSWORD));
-
-        logger.info("database info, url :{}, user :{}, password :{}", env.getProperty(DB_URL), env.getProperty(DB_USER), env.getProperty(DB_PASSWORD));
+        dataSource.setPassword(env.getProperty(DB_LOGINPWD));
         return dataSource;
     }
 
